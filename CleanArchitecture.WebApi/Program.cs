@@ -1,5 +1,4 @@
 using CleanArchitecture.Application.Extensions;
-using CleanArchitecture.Persistence.Context;
 using CleanArchitecture.Persistence.Extensions;
 using CleanArchitecture.WebApi.Extensions;
 
@@ -16,10 +15,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-var serviceScope = app.Services.CreateScope();
-var dataContext = serviceScope.ServiceProvider.GetService<DataContext>();
-dataContext?.Database.EnsureCreated();
 
 app.UseHttpsRedirection();
 

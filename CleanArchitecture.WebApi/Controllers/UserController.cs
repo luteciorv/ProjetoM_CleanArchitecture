@@ -21,7 +21,7 @@ namespace CleanArchitecture.WebApi.Controllers
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<CreateUserResponse>> Post(CreateUserRequest request, CancellationToken cancellationToken)
+        public async Task<ActionResult<CreateUserResponse>> PostAsync(CreateUserRequest request, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(request, cancellationToken);
             return Ok(response);

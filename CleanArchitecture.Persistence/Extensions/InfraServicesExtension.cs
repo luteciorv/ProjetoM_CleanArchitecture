@@ -7,9 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Persistence.Extensions
 {
-    public static class InfraServiceExtension
+    public static class InfraServicesExtension
     {
-        public static void Configure(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureInfraServices(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("SQLServer");
             services.AddDbContext<DataContext>(opt =>

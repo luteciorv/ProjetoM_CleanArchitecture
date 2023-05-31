@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Application.Extensions
 {
-    public static class ServiceExtension
+    public static class ApplicationServicesExtension
     {
-        public static void ConfigureApplication(this IServiceCollection services)
+        public static void ConfigureApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddMediatR(mediatR => mediatR.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));

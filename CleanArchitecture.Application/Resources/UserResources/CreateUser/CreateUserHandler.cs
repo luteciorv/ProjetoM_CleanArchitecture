@@ -22,7 +22,7 @@ namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
 
             var user = _mapper.Map<User>(request);
             
-            await _userRepository.CreateAsync(user);
+            await _userRepository.Create(user);
             await _unitOfWork.SaveAsync(cancellationToken);
 
             var response = _mapper.Map<CreateUserResponse>(user);

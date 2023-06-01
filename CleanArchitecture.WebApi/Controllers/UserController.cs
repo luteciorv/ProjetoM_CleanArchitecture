@@ -1,6 +1,7 @@
-﻿using CleanArchitecture.Application.Resources.UserResources.CreateUser;
-using CleanArchitecture.Application.Resources.UserResources.GetAllUser;
-using MediatR;
+﻿using CleanArchitecture.Application.Commands;
+using CleanArchitecture.Application.DTOs.User;
+using CleanArchitecture.Application.Interfaces.Services;
+using CleanArchitecture.Application.Resources.UserResources.CreateUser;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebApi.Controllers
@@ -9,22 +10,23 @@ namespace CleanArchitecture.WebApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        public UserController(IMediator mediator) =>
-            _mediator = mediator;
-
         [HttpGet("")]
-        public async Task<ActionResult<List<GetAllUserResponse>>> GetAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<ReadUserDto>> GetAsync(
+            [FromServices] IUserService userService, 
+            CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(new GetAllUserRequest(), cancellationToken);
-            return Ok(response);
+            var response = await userService.GetAllAsync(cancellationToken);
+            return response;
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<CreateUserResponse>> PostAsync(CreateUserRequest request, CancellationToken cancellationToken)
+        public async Task<CreateUserResponse> PostAsync(
+            [FromServices] IHandler<CreateUserRequest, CreateUserResponse> handler,
+            CreateUserRequest request, 
+            CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(request, cancellationToken);
-            return Ok(response);
-        }
+            var response = await handler.HandleAsync(request, cancellationToken);          
+            return response;
+        }      
     }
 }

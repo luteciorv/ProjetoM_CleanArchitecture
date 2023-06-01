@@ -20,7 +20,6 @@ app.UseHttpsRedirection();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseErrorHandler();
 app.UseCors();
 
 app.MapControllers();

@@ -1,29 +1,37 @@
-﻿using CleanArchitecture.Application.Repositories;
+﻿using CleanArchitecture.Application.Interfaces.Repositories;
 using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace CleanArchitecture.Persistence.Repositories
 {
     public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-        protected readonly DataContext Context;
-        public BaseRepository(DataContext context) =>
-            Context = context;
+        private readonly DataContext _context;
+        private readonly DbSet<TEntity> _entity;
 
-        public async Task<IEnumerable<TEntity>> GetAll(CancellationToken cancellationToken) =>
-            await Context.Set<TEntity>().ToListAsync(cancellationToken);
-        public async Task<TEntity?> GetById(Guid id, CancellationToken cancellationToken) =>
-            await Context.Set<TEntity>().FindAsync(id, cancellationToken);
-
-        public void Create(TEntity entity) =>
-            Context.Add(entity);
-        public void Delete(TEntity entity)
+        public BaseRepository(DataContext context)
         {
-            entity.DateDeleted = DateTime.UtcNow;
-            Context.Update(entity);
+            _context = context;
+            _entity = _context.Set<TEntity>();
         }
-        public void Update(TEntity entity) =>
-            Context.Update(entity);
+            
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken) =>
+            await _entity.AsNoTracking().ToListAsync(cancellationToken);
+
+        public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken) =>
+            await _entity.FindAsync(new object?[] { id }, cancellationToken);
+
+        public TEntity? GetBy(Expression<Func<TEntity, bool>> predicate) =>
+            _entity.AsQueryable().Where(predicate).FirstOrDefault();
+
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken) =>
+            await _entity.AsQueryable().AnyAsync(predicate, cancellationToken);
+
+        public async Task CreateAsync(TEntity entity, CancellationToken cancellationToken) => await _context.AddAsync(entity, cancellationToken);
+        public void Delete(TEntity entity) => _context.Remove(entity);
+        public void Update(TEntity entity) => _context.Update(entity);
     }
 }

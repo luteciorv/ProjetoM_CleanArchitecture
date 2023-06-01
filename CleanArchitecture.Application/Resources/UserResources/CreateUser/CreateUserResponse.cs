@@ -1,9 +1,17 @@
-﻿namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
+﻿using CleanArchitecture.Application.Commands;
+using CleanArchitecture.Application.DTOs.User;
+using Flunt.Notifications;
+
+namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
 {
-    public sealed record CreateUserResponse
+    public sealed class CreateUserResponse : BaseResponse
     {
-        public Guid Id { get; set; }
-        public string Email { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
+        public CreateUserResponse(bool isSuccess, string message) : base(isSuccess, message)
+        { }
+
+        public CreateUserResponse(bool isSuccess, string message, List<Notification> errors) : base(isSuccess, message, errors)
+        { }
+
+        public ReadUserDto? ReadUserDto { get; private set; }
     }
 }

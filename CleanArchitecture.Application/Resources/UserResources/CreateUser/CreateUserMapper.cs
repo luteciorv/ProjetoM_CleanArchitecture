@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CleanArchitecture.Application.DTOs.User;
 using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
@@ -8,7 +9,11 @@ namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
         public CreateUserMapper()
         {
             CreateMap<CreateUserRequest, User>();
-            CreateMap<User, CreateUserResponse>();
+            CreateMap<User, CreateUserResponse>()
+                .ForMember(response => response.ReadUserDto, dto =>
+                {
+                    dto.MapFrom(user => new ReadUserDto(user.Id, user.Email));
+                });
         }
     }
 }

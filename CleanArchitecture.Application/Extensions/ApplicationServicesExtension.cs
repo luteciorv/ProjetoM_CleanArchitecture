@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
-using CleanArchitecture.Application.Common.Behaviors;
-using FluentValidation;
-using MediatR;
+using CleanArchitecture.Application.Commands;
+using CleanArchitecture.Application.Interfaces.Services;
+using CleanArchitecture.Application.Resources.UserResources.CreateUser;
+using CleanArchitecture.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.Application.Extensions
@@ -11,9 +12,9 @@ namespace CleanArchitecture.Application.Extensions
         public static void ConfigureApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddMediatR(mediatR => mediatR.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
-            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient<IHandler<CreateUserRequest, CreateUserResponse>, CreateUserHandler>();
+
+            services.AddScoped<IUserService, UserService>();
         }
     }
 }

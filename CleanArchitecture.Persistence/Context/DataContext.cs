@@ -6,7 +6,9 @@ namespace CleanArchitecture.Persistence.Context
     public class DataContext : DbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
-        { }
+        {
+            ChangeTracker.LazyLoadingEnabled = false;
+        }
 
         public DbSet<User> Users { get; set; }
     }

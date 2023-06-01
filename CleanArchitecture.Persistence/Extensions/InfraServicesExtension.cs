@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Repositories;
+﻿using CleanArchitecture.Application.Interfaces.Repositories;
 using CleanArchitecture.Persistence.Context;
 using CleanArchitecture.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,6 @@ namespace CleanArchitecture.Persistence.Extensions
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

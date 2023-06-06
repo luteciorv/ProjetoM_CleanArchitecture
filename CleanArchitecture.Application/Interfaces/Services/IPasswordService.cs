@@ -1,4 +1,4 @@
-﻿using CleanArchitecture.Application.Resources.Password;
+﻿using CleanArchitecture.Application.Resources.PasswordEntropy;
 
 namespace CleanArchitecture.Application.Interfaces.Services
 {

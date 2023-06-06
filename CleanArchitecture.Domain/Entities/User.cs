@@ -7,7 +7,7 @@ namespace CleanArchitecture.Domain.Entities
     {
         private User() { }
 
-        public User(string username, Email email, string password)
+        public User(string username, Email email, Password password)
         {
             Username = username;
             Email = email;
@@ -19,7 +19,7 @@ namespace CleanArchitecture.Domain.Entities
 
         public string Username { get; private set; }
         public Email Email { get; private set; }
-        public string Password { get; private set; }
+        public Password Password { get; private set; }
         public int AccessFailedCount { get; private set; }
         public bool IsActive { get; private set; }
 

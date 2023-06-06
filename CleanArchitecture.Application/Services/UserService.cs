@@ -31,11 +31,11 @@ namespace CleanArchitecture.Application.Services
         public async Task<bool> CheckUsernameRegisteredAsync(string username, CancellationToken cancellationToken) =>
             await _unitOfWork.UserRepository.GetByUsernameAsync(username, cancellationToken) is not null;
 
-        public async Task<byte[]> GeneratePasswordHashAsync(string password)
+        public async Task<byte[]> GeneratePasswordHashAsync(string password, string salt)
         {
             var passwordBytes = Encoding.UTF8.GetBytes(password);
-            var salt = await _passwordService.GenerateSaltAsync();
-            return await _passwordService.CreateHashAsync(passwordBytes, salt);
+            var saltBytes = Encoding.UTF8.GetBytes(salt);
+            return await _passwordService.CreateHashAsync(passwordBytes, saltBytes);
         }
     }
 }

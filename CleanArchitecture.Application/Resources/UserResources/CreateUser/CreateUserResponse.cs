@@ -12,6 +12,6 @@ namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
         public CreateUserResponse(bool isSuccess, string message, List<Notification> errors) : base(isSuccess, message, errors)
         { }
 
-        public ReadUserDto? ReadUserDto { get; private set; }
+        public ReadUserDto? Data { get; private set; }
     }
 }

@@ -20,11 +20,10 @@ namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
                .IsLowerOrEqualsThan(Username, 30, nameof(Username), "Este campo deve conter ao menos 30 caracteres.")
                .IsNotNullOrEmpty(Username, nameof(Username), "Este campo não pode ser nulo ou vazio.")
 
-               .IsLowerOrEqualsThan(Password, 30, nameof(Password), "Este campo deve conter ao menos 30 caracteres.")
+               .IsGreaterOrEqualsThan(Password, 8, nameof(Password), "Este campo deve conter ao menos 8 caracteres.")
+               .IsLowerOrEqualsThan(Password, 64, nameof(Password), "Este campo deve conter no máximo 64 caracteres.")
                .IsNotNullOrEmpty(Password, nameof(Password), "Este campo não pode ser nulo ou vazio.")
 
-               .IsLowerOrEqualsThan(ConfirmPassword, 30, nameof(ConfirmPassword), "Este campo deve conter ao menos 30 caracteres.")
-               .IsNotNullOrEmpty(ConfirmPassword, nameof(ConfirmPassword), "Este campo não pode ser nulo ou vazio.")
                .AreEquals(ConfirmPassword, Password, nameof(ConfirmPassword), "As senhas não coincidem.")
            );
         }

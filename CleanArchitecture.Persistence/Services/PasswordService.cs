@@ -1,8 +1,8 @@
 ﻿using CleanArchitecture.Application.Interfaces.Services;
-using CleanArchitecture.Application.Resources.Password;
+using CleanArchitecture.Application.Resources.PasswordEntropy;
+using CleanArchitecture.Domain.Enums;
 using Konscious.Security.Cryptography;
 using System.Security.Cryptography;
-using System.Text.RegularExpressions;
 
 namespace CleanArchitecture.Persistence.Services
 {
@@ -12,7 +12,11 @@ namespace CleanArchitecture.Persistence.Services
         private const int ITERATIONS = 4;
         private const int MEMORY_SIZE = 1024 * 128;
 
-        public Task<PasswordEntropy> CalculateEntropy(string password)
+        /// <summary>
+        ///     Calcula o nível de segurança de uma senha utilizando a entropia.
+        ///     Mais informações no link: https://www.baeldung.com/cs/password-entropy
+        /// </summary>
+        public async Task<PasswordEntropy> CalculateEntropy(string password)
         {
             int lowercaseLetters = password.Any(char.IsLower) ? 26 : 0;
             int upercaseLetters = password.Any(char.IsUpper) ? 26 : 0;
@@ -21,9 +25,19 @@ namespace CleanArchitecture.Persistence.Services
 
             int L = password.Length;
             int R = lowercaseLetters + upercaseLetters + specialCharacters + numbers;
-            double entropyValue = L * Math.Log2(R);
+            int entropyValue = await Task.Run(() => Convert.ToInt32(L * Math.Log2(R)));
 
-            return Task.Run(() => new PasswordEntropy(true, entropyValue, "Top"));
+            if (0 <= entropyValue && entropyValue <= (int)EPasswordSecurityLevel.Poor)
+                return new PoorPasswordEntropy(entropyValue);
+
+            else if ((int)EPasswordSecurityLevel.Poor < entropyValue && entropyValue <= (int)EPasswordSecurityLevel.Weak)
+                return new WeakPasswordEntropy(entropyValue);
+
+            else if ((int)EPasswordSecurityLevel.Weak < entropyValue && entropyValue <= (int)EPasswordSecurityLevel.Resonable)
+                return new ResonablePasswordEntropy(entropyValue);
+
+            else
+                return new VeryGoodPasswordEntropy(entropyValue);
         }
 
         public Task<byte[]> CreateHashAsync(byte[] password, byte[] salt)

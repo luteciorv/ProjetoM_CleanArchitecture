@@ -1,6 +1,8 @@
 ﻿using CleanArchitecture.Application.Interfaces.Repositories;
+using CleanArchitecture.Application.Interfaces.Services;
 using CleanArchitecture.Persistence.Context;
 using CleanArchitecture.Persistence.Repositories;
+using CleanArchitecture.Persistence.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +20,7 @@ namespace CleanArchitecture.Persistence.Extensions
             });
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IPasswordService, PasswordService>();
         }
     }
 }

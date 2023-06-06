@@ -3,7 +3,7 @@ using CleanArchitecture.Application.Commands;
 using CleanArchitecture.Application.Interfaces.Repositories;
 using CleanArchitecture.Application.Interfaces.Services;
 using CleanArchitecture.Domain.Entities;
-using System.Text;
+using CleanArchitecture.Domain.ValueObjects;
 
 namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
 {
@@ -14,9 +14,10 @@ namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CreateUserHandler(IUserService userService, IUnitOfWork unitOfWork, IMapper mapper)
+        public CreateUserHandler(IUserService userService, IPasswordService passwordService, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _userService = userService;
+            _passwordService = passwordService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -39,13 +40,17 @@ namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
             if(!passwordEntropy.IsValid)
                 return new CreateUserResponse(false, $"A senha informada é de caráter {passwordEntropy.SecurityLevel} ({passwordEntropy.EntropyValue} na escala de entropia). Considere aumentar sua complexidade.");
 
-            request.Password = Convert.ToBase64String(await _userService.GeneratePasswordHashAsync(request.Password));
-            var newUser = _mapper.Map<User>(request);
+            string passwordSalt = Convert.ToBase64String(await _passwordService.GenerateSaltAsync());
+            string passwordHash = Convert.ToBase64String(await _userService.GeneratePasswordHashAsync(request.Password, passwordSalt));
+
+            var password = new Password(passwordHash, passwordSalt);
+            var email = new Email(request.Email);
+            var newUser = new User(request.Username, email, password);
 
             await _unitOfWork.UserRepository.CreateAsync(newUser, cancellationToken);
             await _unitOfWork.SaveAsync(cancellationToken);
 
-            var response = new CreateUserResponse(true, "Usuário criado com sucesso.");
+            var response = new CreateUserResponse(true, $"Usuário criado com sucesso. Enviamos um link de confirmação de criação de conta para o e-mail {newUser.Email.Address}.");
             return _mapper.Map(newUser, response);
         }
     }

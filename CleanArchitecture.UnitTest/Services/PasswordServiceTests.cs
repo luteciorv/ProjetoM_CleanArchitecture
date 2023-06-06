@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Interfaces.Services;
+using CleanArchitecture.Application.Resources.PasswordEntropy;
 using CleanArchitecture.Persistence.Services;
 using System.Text;
 
@@ -27,11 +28,35 @@ namespace CleanArchitecture.UnitTest.Services
         }
 
         [TestMethod]
-        [DataRow("200907rjJRV")]
-        public async Task Dado_uma_senha_deve_ter_uma_entropia_boa(string password)
+        [DataRow("070800")]
+        public async Task Dado_uma_senha_deve_possuir_uma_entropia_ruim(string password)
         {
-            var entropy = await _passwordService.CalculateEntropy(password);
-            Assert.IsTrue(entropy.IsValid);
+            var passwordEntropy = await _passwordService.CalculateEntropy(password);
+            Assert.IsInstanceOfType(passwordEntropy, typeof(PoorPasswordEntropy));
+        }
+
+        [TestMethod]
+        [DataRow("TeStEdOs")]
+        public async Task Dado_uma_senha_deve_possuir_uma_entropia_fraca(string password)
+        {
+            var passwordEntropy = await _passwordService.CalculateEntropy(password);
+            Assert.IsInstanceOfType(passwordEntropy, typeof(WeakPasswordEntropy));
+        }
+
+        [TestMethod]
+        [DataRow("TeStE@12")]
+        public async Task Dado_uma_senha_deve_possuir_uma_entropia_razoavel(string password)
+        {
+            var passwordEntropy = await _passwordService.CalculateEntropy(password);
+            Assert.IsInstanceOfType(passwordEntropy, typeof(ResonablePasswordEntropy));
+        }
+
+        [TestMethod]
+        [DataRow("TeStE@147258")]
+        public async Task Dado_uma_senha_deve_possuir_uma_entropia_muito_boa(string password)
+        {
+            var passwordEntropy = await _passwordService.CalculateEntropy(password);
+            Assert.IsInstanceOfType(passwordEntropy, typeof(VeryGoodPasswordEntropy));
         }
     }
 }

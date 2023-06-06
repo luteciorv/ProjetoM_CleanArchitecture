@@ -14,11 +14,8 @@ namespace CleanArchitecture.Application.Resources.UserResources
                 .ForMember(dto => dto.Email, map => map.MapFrom(user => $"Email -- {user.Email.Address}"))
                 .ForMember(dto => dto.EmailVerified, map => map.MapFrom(user => user.Email.Verified));
 
-            CreateMap<CreateUserRequest, User>()
-                .ForMember(user => user.Email, map => map.MapFrom(request => new Email(request.Email)));
-
             CreateMap<User, CreateUserResponse>()
-                .ForMember(response => response.ReadUserDto, map =>
+                .ForMember(response => response.Data, map =>
                 {
                     map.MapFrom(user => new ReadUserDto
                     {

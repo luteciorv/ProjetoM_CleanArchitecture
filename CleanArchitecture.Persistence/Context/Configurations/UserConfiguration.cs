@@ -11,12 +11,17 @@ namespace CleanArchitecture.Persistence.Context.Configurations
             builder.ToTable("Users");
             builder.HasKey(u => u.Id);
 
-            builder.OwnsOne(u => u.Email, email =>
+            builder.OwnsOne(u => u.Email, map =>
             {
-                email.Property(e => e.Address).HasColumnName("Email");
-                email.Property(e => e.Verified).HasColumnName("EmailVerified");
+                map.Property(e => e.Address).HasColumnName("Email");
+                map.Property(e => e.Verified).HasColumnName("EmailVerified");
             });
-            
+            builder.OwnsOne(u => u.Password, map =>
+            {
+                map.Property(p => p.Hash).HasColumnName("PasswordHash");
+                map.Property(p => p.Salt).HasColumnName("PasswordSalt");
+            });
+
             builder.HasOne(u => u.Profile).WithOne(p => p.User).HasForeignKey<Profile>(p => p.UserId);
         }
     }

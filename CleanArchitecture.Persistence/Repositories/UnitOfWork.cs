@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.Application.Interfaces.Repositories;
-using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Persistence.Context;
 
 namespace CleanArchitecture.Persistence.Repositories
@@ -11,12 +10,12 @@ namespace CleanArchitecture.Persistence.Repositories
             _dataContext = dataContext;
 
 
-        private BaseRepository<User> _userRepository;
-        public IRepository<User> UserRepository
+        private UserRepository _userRepository;
+        public IUserRepository UserRepository
         {
             get
             {
-                _userRepository ??= new BaseRepository<User>(_dataContext);
+                _userRepository ??= new UserRepository(_dataContext);
                 return _userRepository;
             }
         }

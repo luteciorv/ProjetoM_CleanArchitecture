@@ -1,15 +1,12 @@
 ﻿using CleanArchitecture.Domain.Common;
-using System.Linq.Expressions;
 
 namespace CleanArchitecture.Application.Interfaces.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : BaseEntity
+    public interface IBaseRepository<TEntity> where TEntity : BaseEntity
     {
         Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken);
-        TEntity? GetBy(Expression<Func<TEntity, bool>> predicate);
-
-        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken);
+        IQueryable<TEntity> GetAll();
 
         Task CreateAsync(TEntity entity, CancellationToken cancellationToken);
         void Update(TEntity entity);

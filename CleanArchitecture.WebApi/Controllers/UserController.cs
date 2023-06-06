@@ -11,22 +11,20 @@ namespace CleanArchitecture.WebApi.Controllers
     public class UserController : ControllerBase
     {
         [HttpGet("")]
-        public async Task<IEnumerable<ReadUserDto>> GetAsync(
+        public async Task<IEnumerable<ReadUserDto>> Get(
             [FromServices] IUserService userService, 
             CancellationToken cancellationToken)
         {
-            var response = await userService.GetAllAsync(cancellationToken);
-            return response;
+            return await userService.GetAllActiveAsync(cancellationToken);
         }
-
+        
         [HttpPost("")]
-        public async Task<CreateUserResponse> PostAsync(
+        public async Task<CreateUserResponse> Post(
             [FromServices] IHandler<CreateUserRequest, CreateUserResponse> handler,
             CreateUserRequest request, 
             CancellationToken cancellationToken)
         {
-            var response = await handler.HandleAsync(request, cancellationToken);          
-            return response;
+            return await handler.HandleAsync(request, cancellationToken);          
         }      
     }
 }

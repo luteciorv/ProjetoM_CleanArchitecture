@@ -2,26 +2,40 @@
 using CleanArchitecture.Application.DTOs.User;
 using CleanArchitecture.Application.Interfaces.Repositories;
 using CleanArchitecture.Application.Interfaces.Services;
-using CleanArchitecture.Application.Queries;
+using System.Text;
 
 namespace CleanArchitecture.Application.Services
 {
     public sealed class UserService : IUserService
     {
+        private readonly IPasswordService _passwordService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper) =>
-        (_unitOfWork, _mapper) = (unitOfWork, mapper);
-
-        public async Task<IEnumerable<ReadUserDto>> GetAllAsync(CancellationToken cancellationToken)
+        public UserService(IPasswordService passwordService, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            var users = await _unitOfWork.UserRepository.GetAllAsync(cancellationToken);
-            var readUsers = _mapper.Map<IEnumerable<ReadUserDto>>(users);
-            return readUsers;
+            _passwordService = passwordService;
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        
+
+        public async Task<IEnumerable<ReadUserDto>> GetAllActiveAsync(CancellationToken cancellationToken)
+        {
+            var users = await _unitOfWork.UserRepository.GetAllActiveAsync(cancellationToken);
+            return _mapper.Map<IEnumerable<ReadUserDto>>(users);
+        }
+
         public async Task<bool> CheckEmailRegisteredAsync(string email, CancellationToken cancellationToken) =>
-            await _unitOfWork.UserRepository.AnyAsync(UserQueries.GetByEmail(email), cancellationToken);
+            await _unitOfWork.UserRepository.GetByEmailAsync(email, cancellationToken) is not null;
+
+        public async Task<bool> CheckUsernameRegisteredAsync(string username, CancellationToken cancellationToken) =>
+            await _unitOfWork.UserRepository.GetByUsernameAsync(username, cancellationToken) is not null;
+
+        public async Task<byte[]> GeneratePasswordHashAsync(string password)
+        {
+            var passwordBytes = Encoding.UTF8.GetBytes(password);
+            var salt = await _passwordService.GenerateSaltAsync();
+            return await _passwordService.CreateHashAsync(passwordBytes, salt);
+        }
     }
 }

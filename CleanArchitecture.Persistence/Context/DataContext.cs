@@ -9,7 +9,12 @@ namespace CleanArchitecture.Persistence.Context
         {
             ChangeTracker.LazyLoadingEnabled = false;
         }
+      
+        protected override void OnModelCreating(ModelBuilder modelBuilder) =>
+             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DataContext).Assembly);
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Profile> Profiles { get; set; }
+
     }
 }

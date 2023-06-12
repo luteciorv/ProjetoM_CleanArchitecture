@@ -1,9 +1,9 @@
 ﻿using CleanArchitecture.Application.Interfaces.Repositories;
 using CleanArchitecture.Domain.Common;
-using CleanArchitecture.Persistence.Context;
+using CleanArchitecture.Infraestructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Persistence.Repositories
+namespace CleanArchitecture.Infraestructure.Persistence.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
     {

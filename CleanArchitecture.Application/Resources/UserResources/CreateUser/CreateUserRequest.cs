@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Application.Commands;
+using CleanArchitecture.Application.Exceptions.Request;
 using Flunt.Validations;
 
 namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
@@ -26,6 +27,9 @@ namespace CleanArchitecture.Application.Resources.UserResources.CreateUser
 
                .AreEquals(ConfirmPassword, Password, nameof(ConfirmPassword), "As senhas não coincidem.")
            );
+
+            if(!IsValid)
+                throw new InvalidUserRequestException("A requisição para criar um novo usuário está inválida. Alguns dados estão incorretos.", Notifications.ToList());
         }
     }
 }

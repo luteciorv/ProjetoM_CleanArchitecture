@@ -1,10 +1,10 @@
-﻿using CleanArchitecture.Application.Interfaces.Services;
-using CleanArchitecture.Application.Resources.PasswordEntropy;
+﻿using CleanArchitecture.Application.Exceptions.PasswordEntropy;
+using CleanArchitecture.Application.Interfaces.Services;
 using CleanArchitecture.Domain.Enums;
 using Konscious.Security.Cryptography;
 using System.Security.Cryptography;
 
-namespace CleanArchitecture.Persistence.Services
+namespace CleanArchitecture.Infraestructure.Security.Services
 {
     public class PasswordService : IPasswordService
     {
@@ -13,10 +13,10 @@ namespace CleanArchitecture.Persistence.Services
         private const int MEMORY_SIZE = 1024 * 128;
 
         /// <summary>
-        ///     Calcula o nível de segurança de uma senha utilizando a entropia.
+        ///     Garante que o nível de segurança de uma senha utilizando a entropia.
         ///     Mais informações no link: https://www.baeldung.com/cs/password-entropy
         /// </summary>
-        public async Task<PasswordEntropy> CalculateEntropy(string password)
+        public async Task EnsureEntropyIsValid(string password)
         {
             int lowercaseLetters = password.Any(char.IsLower) ? 26 : 0;
             int upercaseLetters = password.Any(char.IsUpper) ? 26 : 0;
@@ -28,16 +28,10 @@ namespace CleanArchitecture.Persistence.Services
             int entropyValue = await Task.Run(() => Convert.ToInt32(L * Math.Log2(R)));
 
             if (0 <= entropyValue && entropyValue <= (int)EPasswordSecurityLevel.Poor)
-                return new PoorPasswordEntropy(entropyValue);
+                throw new PoorPasswordEntropyException("A senha informada é muito fraca. Considere aumentar sua complexidade.");
 
             else if ((int)EPasswordSecurityLevel.Poor < entropyValue && entropyValue <= (int)EPasswordSecurityLevel.Weak)
-                return new WeakPasswordEntropy(entropyValue);
-
-            else if ((int)EPasswordSecurityLevel.Weak < entropyValue && entropyValue <= (int)EPasswordSecurityLevel.Resonable)
-                return new ResonablePasswordEntropy(entropyValue);
-
-            else
-                return new VeryGoodPasswordEntropy(entropyValue);
+                throw new WeakPasswordEntropyException("A senha informada é fraca. Considere aumentar a sua complexidade.");
         }
 
         public Task<byte[]> CreateHashAsync(byte[] password, byte[] salt)

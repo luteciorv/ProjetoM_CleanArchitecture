@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CleanArchitecture.Persistence.Context.Configurations
+namespace CleanArchitecture.Infraestructure.Persistence.Context.Configurations
 {
     public class ProfileConfigurations : IEntityTypeConfiguration<Profile>
     {

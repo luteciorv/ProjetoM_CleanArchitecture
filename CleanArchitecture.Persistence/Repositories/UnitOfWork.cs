@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Application.Interfaces.Repositories;
-using CleanArchitecture.Persistence.Context;
+using CleanArchitecture.Infraestructure.Persistence.Context;
 
-namespace CleanArchitecture.Persistence.Repositories
+namespace CleanArchitecture.Infraestructure.Persistence.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {

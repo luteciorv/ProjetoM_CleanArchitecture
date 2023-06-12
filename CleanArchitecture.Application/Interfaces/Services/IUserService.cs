@@ -1,12 +1,17 @@
 ﻿using CleanArchitecture.Application.DTOs.User;
+using CleanArchitecture.Application.Resources.UserResources.CreateUser;
+using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.ValueObjects;
 
 namespace CleanArchitecture.Application.Interfaces.Services
 {
     public interface IUserService
     {
         Task<IEnumerable<ReadUserDto>> GetAllActiveAsync(CancellationToken cancellationToken);
-        Task<bool> CheckEmailRegisteredAsync(string email, CancellationToken cancellationToken);
-        Task<bool> CheckUsernameRegisteredAsync(string username, CancellationToken cancellationToken);
-        Task<byte[]> GeneratePasswordHashAsync(string password, string salt);
+        Task EnsureEmailNotRegisteredAsync(string email, CancellationToken cancellationToken);
+        Task EnsureUsernameNotRegisteredAsync(string username, CancellationToken cancellationToken);
+        
+        Task<User> CreateUserAsync(CreateUserRequest request, CancellationToken cancellationToken);
+        Task<Password> CreatePasswordAsync(string password);
     }
 }

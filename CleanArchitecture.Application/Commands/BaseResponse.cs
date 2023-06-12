@@ -10,11 +10,11 @@ namespace CleanArchitecture.Application.Commands
             Message = message;
         }
 
-        protected BaseResponse(bool isSuccess, string message, List<Notification> errors) : this(isSuccess, message) =>
+        protected BaseResponse(bool isSuccess, string message, object? errors) : this(isSuccess, message) =>
             Errors = errors;
 
         public bool IsSuccess { get; private set; }
         public string Message { get; private set; }
-        public IEnumerable<Notification> Errors { get; private set; } = Enumerable.Empty<Notification>();
+        public object? Errors { get; private set; }
     }
 }

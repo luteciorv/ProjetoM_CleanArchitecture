@@ -4,7 +4,7 @@ namespace CleanArchitecture.Application.Interfaces.Services
 {
     public interface IPasswordService
     {
-        Task<PasswordEntropy> CalculateEntropy(string password);
+        Task EnsureEntropyIsValid(string password);
 
         Task<byte[]> GenerateSaltAsync();
         Task<byte[]> CreateHashAsync(byte[] password, byte[] salt);

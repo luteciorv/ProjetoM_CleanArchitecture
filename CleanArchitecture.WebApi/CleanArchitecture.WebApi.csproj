@@ -11,13 +11,16 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
-    <ProjectReference Include="..\CleanArchitecture.Persistence\CleanArchitecture.Persistence.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.Communication\CleanArchitecture.Infraestructure.Communication.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.Persistence\CleanArchitecture.Infraestructure.Persistence.csproj" />
+    <ProjectReference Include="..\CleanArchitecture.Security\CleanArchitecture.Infraestructure.Security.csproj" />
   </ItemGroup>
 
 </Project>

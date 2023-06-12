@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.Application.DTOs.User
 {
-    public sealed class ReadUserDto
+    public sealed record ReadUserDto
     {
         public Guid Id { get; set; }
         public string Username { get; set; } = string.Empty;

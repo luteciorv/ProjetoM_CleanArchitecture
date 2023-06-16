@@ -17,15 +17,14 @@ namespace CleanArchitecture.Application.Resources.UserResources
             CreateMap<User, CreateUserResponse>()
                 .ForMember(response => response.Data, map =>
                 {
-                    map.MapFrom(user => new ReadUserDto
-                    {
-                        Id = user.Id,
-                        Username = user.Username,
-                        Email = user.Email.Address,
-                        EmailVerified = user.Email.Verified,
-                        AccessFailedCount = user.AccessFailedCount,
-                        IsActive = user.IsActive
-                    });
+                    map.MapFrom(user => new ReadUserDto(
+                        user.Id, 
+                        user.Username, 
+                        user.Email.Address, 
+                        user.Email.Verified, 
+                        user.AccessFailedCount, 
+                        user.IsActive
+                    ));
                 });
         }
     }

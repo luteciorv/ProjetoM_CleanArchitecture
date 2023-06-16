@@ -10,8 +10,10 @@ namespace CleanArchitecture.Application.Interfaces.Services
         Task<IEnumerable<ReadUserDto>> GetAllActiveAsync(CancellationToken cancellationToken);
         Task EnsureEmailNotRegisteredAsync(string email, CancellationToken cancellationToken);
         Task EnsureUsernameNotRegisteredAsync(string username, CancellationToken cancellationToken);
-        
+
         Task<User> CreateUserAsync(CreateUserRequest request, CancellationToken cancellationToken);
         Task<Password> CreatePasswordAsync(string password);
+
+        Task ConfirmEmailAsync(string email, CancellationToken cancellationToken);
     }
 }

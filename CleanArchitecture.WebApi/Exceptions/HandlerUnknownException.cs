@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.WebApi.Exceptions
 {
-    public static class HandleUnknownException
+    public static class HandlerUnknownException
     {
         public static void Handle(ExceptionContext context)
         {

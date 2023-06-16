@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace CleanArchitecture.WebApi.Exceptions
 {
-    public static class HandleEmailException
+    public static class HandlerEmailException
     {
         public static void EmailAlreadyRegistered(ExceptionContext context)
         {

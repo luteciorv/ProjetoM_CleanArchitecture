@@ -1,9 +1,11 @@
 ﻿using CleanArchitecture.Application.Commands;
 using CleanArchitecture.Application.DTOs.User;
-using CleanArchitecture.Application.Interfaces.Repositories;
 using CleanArchitecture.Application.Interfaces.Services;
+using CleanArchitecture.Application.Resources.UserResources.ConfirmUserEmail;
 using CleanArchitecture.Application.Resources.UserResources.CreateUser;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 
 namespace CleanArchitecture.WebApi.Controllers
 {
@@ -28,19 +30,27 @@ namespace CleanArchitecture.WebApi.Controllers
             return await handler.HandleAsync(request, cancellationToken);          
         }
 
-        [HttpGet("confirm-register/{id:guid}")]
-        public async Task ActiveUser(
-            [FromServices] IUnitOfWork unitOfWork,
-            Guid id,
-            CancellationToken cancellationToken
-            )
+
+        [HttpGet("confirm-email/{token}")]
+        public async Task<IActionResult> ActiveUser(string token, CancellationToken cancellationToken)
         {
-            var user = await unitOfWork.UserRepository.GetByIdAsync(id, cancellationToken) ?? 
-                throw new Exception("Usuário não encontrado");
+            var request = new ConfirmUserEmailRequest { Token = token };
 
-            user.Email.VerifyEmail();
+            using var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await client.PutAsJsonAsync("https://localhost:7108/api/users/confirm-email", request, cancellationToken);
 
-            await unitOfWork.SaveAsync(cancellationToken);
+            return Redirect("https://localhost:7108/swagger/index.html");
+        }
+
+        [Authorize(AuthenticationSchemes = "JwtECDsa")]
+        [HttpPut("confirm-email")]
+        public async Task<ConfirmUserEmailResponse> ActiveUser(
+            [FromServices] IHandler<ConfirmUserEmailRequest, ConfirmUserEmailResponse> handler,
+            [FromBody] ConfirmUserEmailRequest request,
+            CancellationToken cancellationToken)
+        {
+            return await handler.HandleAsync(request, cancellationToken);
         }
     }
 }

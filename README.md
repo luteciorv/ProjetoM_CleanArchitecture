@@ -24,7 +24,7 @@
 
 ### Relacionamento de tabelas
 
-### Segurança - Hashe de senhas
+### Segurança - Hashes de senha
 
 ### Testes unitários
 

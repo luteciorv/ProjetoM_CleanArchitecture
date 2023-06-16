@@ -11,6 +11,6 @@
         public string Address { get; private set; }
         public bool Verified { get; private set; }
 
-        public void VerifyEmail() => Verified = true;
+        public void ConfirmEmail() => Verified = true;
     }
 }

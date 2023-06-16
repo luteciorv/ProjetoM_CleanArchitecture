@@ -1,23 +1,22 @@
-﻿using CleanArchitecture.Application.Exceptions.Request;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using CleanArchitecture.Application.Exceptions.ECDsaEncryption;
 
 namespace CleanArchitecture.WebApi.Exceptions
 {
-    public static class HandleInvalidRequestException
+    public static class HandlerECDsaException
     {
-        public static void InvalidUserRequest(ExceptionContext context)
+        public static void ECDsaKeysAlreadyExists(ExceptionContext context)
         {
-            if (context.Exception is not InvalidUserRequestException exception) return;
+            if (context.Exception is not ECDsaKeyAlreadyExistsException exception) return;
 
             var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status400BadRequest,
-                Title = "O nome do usuário informado já foi cadastrado.",
+                Title = "Chaves de criptografia",
                 Type = "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/400",
                 Detail = exception.Message
             };
-            details.Extensions.Add("Invalid Fields", exception.DataException);
 
             context.Result = new BadRequestObjectResult(details);
 

@@ -1,4 +1,6 @@
 ﻿using CleanArchitecture.Application.Exceptions;
+using CleanArchitecture.Application.Exceptions.Claims;
+using CleanArchitecture.Application.Exceptions.ECDsaEncryption;
 using CleanArchitecture.Application.Exceptions.Email;
 using CleanArchitecture.Application.Exceptions.PasswordEntropy;
 using CleanArchitecture.Application.Exceptions.Request;
@@ -15,11 +17,16 @@ namespace CleanArchitecture.WebApi.Exceptions
         {
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
-                { typeof(InvalidUserRequestException), HandleInvalidRequestException.InvalidUserRequest },
-                { typeof(EmailAlreadyRegisteredException), HandleEmailException.EmailAlreadyRegistered },
+                { typeof(InvalidUserRequestException), HandlerInvalidRequestException.InvalidUserRequest },
+                { typeof(EmailAlreadyRegisteredException), HandlerEmailException.EmailAlreadyRegistered },
                 { typeof(UsernameAlreadyRegisteredException), HandlerUsernameException.UsernameAlreadyRegistered },
+
                 { typeof(PoorPasswordEntropyException), HandlerPasswordEntropyException.Handle },
                 { typeof(WeakPasswordEntropyException), HandlerPasswordEntropyException.Handle },
+
+                { typeof(ECDsaKeyAlreadyExistsException), HandlerECDsaException.ECDsaKeysAlreadyExists },
+
+                { typeof(EmailClaimException), HandlerClaimException.EmailNotFound },
             };
         }
 
@@ -43,7 +50,7 @@ namespace CleanArchitecture.WebApi.Exceptions
             else
             {
                 Log.Error(context.Exception, "EXCEÇÃO DESCONHECIDA E NÃO MAPEADA.");
-                HandleUnknownException.Handle(context);
+                HandlerUnknownException.Handle(context);
             }
         }
     }

@@ -66,5 +66,16 @@ namespace CleanArchitecture.Application.Services
             await _unitOfWork.UserRepository.CreateAsync(newUser, cancellationToken);
             return newUser;
         }
+
+        public async Task ConfirmEmailAsync(string email, CancellationToken cancellationToken)
+        {
+            var user = await _unitOfWork.UserRepository.GetByEmailAsync(email, cancellationToken) ?? 
+                throw new EmailNotRegisteredException("O e-mail informado não foi registrado no sistema.");
+            
+            if (user.Email.Verified)
+                throw new EmailAlreadyConfirmedException("O e-mail informado já foi confirmado.");
+
+            user.Email.ConfirmEmail();
+        }
     }
 }

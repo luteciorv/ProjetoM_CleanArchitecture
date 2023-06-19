@@ -23,7 +23,7 @@ namespace CleanArchitecture.Application.Resources.UserResources.ConfirmUserEmail
             _tokenService.EnsureHaveClaim(request.Token, UserClaims.EMAIL);
             var email = _tokenService.GetClaimValue(request.Token, UserClaims.EMAIL);
 
-            await _userService.ConfirmEmailAsync(email, cancellationToken);        
+            await _userService.ConfirmEmailAsync(email, cancellationToken);
             await _unitOfWork.SaveAsync(cancellationToken);
             
             return new ConfirmUserEmailResponse(true, $"O e-mail {email} foi confirmado com sucesso.");

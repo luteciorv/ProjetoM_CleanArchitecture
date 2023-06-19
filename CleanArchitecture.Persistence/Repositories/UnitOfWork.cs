@@ -1,5 +1,4 @@
 ﻿using CleanArchitecture.Application.Interfaces.Repositories;
-using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Infraestructure.Persistence.Context;
 
 namespace CleanArchitecture.Infraestructure.Persistence.Repositories

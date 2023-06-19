@@ -76,6 +76,7 @@ namespace CleanArchitecture.Application.Services
                 throw new EmailAlreadyConfirmedException("O e-mail informado já foi confirmado.");
 
             user.Email.ConfirmEmail();
+            _unitOfWork.UserRepository.Update(user);
         }
     }
 }

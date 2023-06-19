@@ -45,7 +45,7 @@ namespace CleanArchitecture.Infraestructure.Security.Services
             var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
 
             var claimFound = jwt.Claims.FirstOrDefault(c => c.Type == claim) ??
-                throw new EmailClaimException($"O Token informado não possui a claim {claim}.");
+                throw new ClaimException($"O Token informado não possui a claim {claim}.");
         }
 
         public string GetClaimValue(string token, string claim)

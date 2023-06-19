@@ -29,7 +29,7 @@ namespace CleanArchitecture.WebApi.Exceptions
 
                 { typeof(ECDsaKeyAlreadyExistsException), HandlerECDsaException.ECDsaKeysAlreadyExists },
 
-                { typeof(EmailClaimException), HandlerClaimException.EmailNotFound },
+                { typeof(EmailClaimException), HandlerClaimException.NotFound },
             };
         }
 

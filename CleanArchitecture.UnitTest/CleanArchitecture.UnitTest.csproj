@@ -22,4 +22,10 @@
     <ProjectReference Include="..\CleanArchitecture.Security\CleanArchitecture.Infraestructure.Security.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entities\" />
+    <Folder Include="ValueObjects\" />
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
 </Project>

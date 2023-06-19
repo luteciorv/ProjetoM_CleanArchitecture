@@ -1,8 +1,10 @@
 # Projeto M - Clean Architecture
 
 ### Descrição
-        * Projeto inicialmente criado e desenvolvido seguindo o artigo: https://juldhais.net/clean-architecture-in-asp-net-core-web-api-4e5ef0b96f99
-        * Este projeto foi feito para testar a implementação de inúmeras ferramentas/tecnologias seguindo o padrão de design da arquitetura limpa e do clean code.
+        * Projeto inicialmente criado e desenvolvido seguindo o artigo: 
+        https://juldhais.net/clean-architecture-in-asp-net-core-web-api-4e5ef0b96f99
+        * Este projeto foi feito para testar a implementação de inúmeras ferramentas/tecnologias 
+        seguindo o padrão de design da arquitetura limpa e do clean code.
 
 ### Organização do Projeto
         - Camada de apresentação
@@ -64,7 +66,6 @@
         - Nos testes unitários devem ser coberto:
                 . Inicialização das entidades e dos Value Objects
                 . Métodos dos Services criados
-                . Handlers e seu fluxo
                 . Queries da classe estática
         - Fuja de quaisquer testes que envolvam:
                 . Manipulação de arquivos externos

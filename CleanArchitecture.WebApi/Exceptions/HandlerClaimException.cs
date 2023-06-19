@@ -1,20 +1,19 @@
-﻿using CleanArchitecture.Application.Exceptions.ECDsaEncryption;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using CleanArchitecture.Domain.Statics;
+using CleanArchitecture.Application.Exceptions.Claims;
 
 namespace CleanArchitecture.WebApi.Exceptions
 {
     public static class HandlerClaimException
     {
-        public static void EmailNotFound(ExceptionContext context)
+        public static void NotFound(ExceptionContext context)
         {
-            if (context.Exception is not ECDsaKeyAlreadyExistsException exception) return;
+            if (context.Exception is not ClaimException exception) return;
 
             var details = new ProblemDetails()
             {
                 Status = StatusCodes.Status404NotFound,
-                Title = $"Claim {UserClaims.EMAIL}",
+                Title = $"Claim informada não encontrada",
                 Type = "https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/400",
                 Detail = exception.Message
             };

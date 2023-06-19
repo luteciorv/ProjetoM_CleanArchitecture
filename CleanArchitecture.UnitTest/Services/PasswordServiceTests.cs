@@ -1,6 +1,5 @@
 ﻿using CleanArchitecture.Application.Exceptions.PasswordEntropy;
 using CleanArchitecture.Application.Interfaces.Services;
-using CleanArchitecture.Application.Resources.PasswordEntropy;
 using CleanArchitecture.Infraestructure.Security.Services;
 using System.Text;
 
@@ -16,14 +15,16 @@ namespace CleanArchitecture.UnitTest.Services
         }
 
         [TestMethod]
-        [DataRow("S3Nh@CoMpL3x@", "S3Nh@CoMpL3x@")]
-        public async Task Dado_uma_senha_deve_hashear_ela(string password, string passwordToCompare)
+        [DataRow("senhafraca")]
+        [DataRow("SenhaMedia")]
+        [DataRow("S3Nh@CoMpL3x@")]
+        public async Task Dado_uma_senha_deve_hashear_ela(string password)
         {
             var passwordBytes = Encoding.UTF8.GetBytes(password);
             var salt = await _passwordService.GenerateSaltAsync();
-            var passwordHash = await _passwordService.CreateHashAsync(passwordBytes, salt); // Armazenar no banco de dados
+            var passwordHash = await _passwordService.CreateHashAsync(passwordBytes, salt);
 
-            var passwordToCompareBytes = Encoding.UTF8.GetBytes(passwordToCompare);
+            var passwordToCompareBytes = Encoding.UTF8.GetBytes(password);
 
             Assert.IsTrue(await _passwordService.VerifyPasswordAsync(passwordToCompareBytes, salt, passwordHash));
         }
@@ -39,24 +40,7 @@ namespace CleanArchitecture.UnitTest.Services
         [DataRow("TeStEdOs")]
         public async Task Dado_uma_senha_deve_possuir_uma_entropia_fraca(string password)
         {
-            //var passwordEntropy = await _passwordService.CalculateEntropy(password);
-            //Assert.IsInstanceOfType(passwordEntropy, typeof(WeakPasswordEntropy));
-        }
-
-        [TestMethod]
-        [DataRow("TeStE@12")]
-        public async Task Dado_uma_senha_deve_possuir_uma_entropia_razoavel(string password)
-        {
-            //var passwordEntropy = await _passwordService.CalculateEntropy(password);
-            //Assert.IsInstanceOfType(passwordEntropy, typeof(ResonablePasswordEntropy));
-        }
-
-        [TestMethod]
-        [DataRow("TeStE@147258")]
-        public async Task Dado_uma_senha_deve_possuir_uma_entropia_muito_boa(string password)
-        {
-            //var passwordEntropy = await _passwordService.CalculateEntropy(password);
-            //Assert.IsInstanceOfType(passwordEntropy, typeof(VeryGoodPasswordEntropy));
+            await Assert.ThrowsExceptionAsync<WeakPasswordEntropyException>(async () => await _passwordService.EnsureEntropyIsValid(password));
         }
     }
 }

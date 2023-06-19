@@ -25,7 +25,7 @@ namespace CleanArchitecture.WebApi.Exceptions
 
         public static void EmailNotRegistered(ExceptionContext context)
         {
-            if (context.Exception is not EmailAlreadyRegisteredException exception) return;
+            if (context.Exception is not EmailNotRegisteredException exception) return;
 
             var details = new ProblemDetails()
             {
@@ -42,7 +42,7 @@ namespace CleanArchitecture.WebApi.Exceptions
 
         public static void EmailAlreadyConfirmed(ExceptionContext context)
         {
-            if (context.Exception is not EmailAlreadyRegisteredException exception) return;
+            if (context.Exception is not EmailAlreadyConfirmedException exception) return;
 
             var details = new ProblemDetails()
             {

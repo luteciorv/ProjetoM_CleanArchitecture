@@ -18,8 +18,11 @@ namespace CleanArchitecture.WebApi.Exceptions
             _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
                 { typeof(InvalidUserRequestException), HandlerInvalidRequestException.InvalidUserRequest },
-                { typeof(EmailAlreadyRegisteredException), HandlerEmailException.EmailAlreadyRegistered },
                 { typeof(UsernameAlreadyRegisteredException), HandlerUsernameException.UsernameAlreadyRegistered },
+
+                { typeof(EmailAlreadyRegisteredException), HandlerEmailException.EmailAlreadyRegistered },
+                { typeof(EmailNotRegisteredException), HandlerEmailException.EmailNotRegistered },
+                { typeof(EmailAlreadyConfirmedException), HandlerEmailException.EmailAlreadyConfirmed },
 
                 { typeof(PoorPasswordEntropyException), HandlerPasswordEntropyException.Handle },
                 { typeof(WeakPasswordEntropyException), HandlerPasswordEntropyException.Handle },

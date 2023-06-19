@@ -52,6 +52,7 @@ namespace CleanArchitecture.Infraestructure.Security.Services
         {
             var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
 
+            var teste = jwt.Claims.FirstOrDefault(c => c.Type == claim);
             return jwt.Claims.FirstOrDefault(c => c.Type == claim).Value;
         }
     }

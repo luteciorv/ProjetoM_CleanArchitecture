@@ -8,9 +8,13 @@ namespace CleanArchitecture.WebApi.Controllers
     [ApiController]
     public class ECDsaEncryptionController : ControllerBase
     {
-        public ECDsaEncryptionController() { }
-
-        [HttpPost]
+        /// <summary>
+        /// Cria as chaves pública e privada utilizando o algoritmo de criptografia ECDSA com a curva nistP521
+        /// </summary>
+        /// <returns>Um Dto contendo as chaves pública e privada criadas</returns>
+        /// <response code="201">Chaves pública e privada criadas com sucesso</response>
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(ReadECDsaEncryptionDto))]
+        [HttpPost("")]
         public ReadECDsaEncryptionDto Post([FromServices] IECDsaEncryptionService ecdsaEncryptionService)
         {
             return ecdsaEncryptionService.CreateKeys();

@@ -13,6 +13,12 @@ namespace CleanArchitecture.WebApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        /// <summary>
+        /// Recupera todos os usuários ativos
+        /// </summary>
+        /// <returns>Um IEnumerable de usuários ativos</returns>
+        /// <response code="200">Usuários ativos recuperados com sucesso</response>
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ReadUserDto>))]
         [HttpGet("")]
         public async Task<IEnumerable<ReadUserDto>> Get(
             [FromServices] IUserService userService, 
@@ -20,7 +26,19 @@ namespace CleanArchitecture.WebApi.Controllers
         {
             return await userService.GetAllActiveAsync(cancellationToken);
         }
-        
+
+        /// <summary>Cria um novo usuário</summary>
+        /// <param name="request">Informações do novo usuário</param>
+        /// <param name="handler"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>Novo usuário criado com sucesso</returns>
+        /// <response code="201">Usuário criado com sucesso</response>
+        /// <response code="400">Informações inválidas no corpo da requisição</response>
+        /// <response code="500">Erro não mapeado no servidor</response>
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(CreateUserResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Consumes("application/json"), Produces("application/json")]
         [HttpPost("")]
         public async Task<CreateUserResponse> Post(
             [FromServices] IHandler<CreateUserRequest, CreateUserResponse> handler,
@@ -31,6 +49,7 @@ namespace CleanArchitecture.WebApi.Controllers
         }
 
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet("confirm-email/{token}")]
         public async Task<IActionResult> ActiveUser(string token, CancellationToken cancellationToken)
         {
@@ -43,6 +62,7 @@ namespace CleanArchitecture.WebApi.Controllers
             return Redirect("https://localhost:7108/swagger/index.html");
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Authorize(AuthenticationSchemes = "JwtECDsa")]
         [HttpPut("confirm-email")]
         public async Task<ConfirmUserEmailResponse> ActiveUser(

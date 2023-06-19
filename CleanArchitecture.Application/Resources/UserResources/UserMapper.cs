@@ -1,7 +1,6 @@
 ﻿using CleanArchitecture.Application.DTOs.User;
 using CleanArchitecture.Application.Resources.UserResources.CreateUser;
 using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.ValueObjects;
 using Profile = AutoMapper.Profile;
 
 namespace CleanArchitecture.Application.Resources.UserResources
@@ -11,7 +10,7 @@ namespace CleanArchitecture.Application.Resources.UserResources
         public UserMapper()
         {
             CreateMap<User, ReadUserDto>()
-                .ForMember(dto => dto.Email, map => map.MapFrom(user => $"Email -- {user.Email.Address}"))
+                .ForMember(dto => dto.Email, map => map.MapFrom(user => user.Email.Address))
                 .ForMember(dto => dto.EmailVerified, map => map.MapFrom(user => user.Email.Verified));
 
             CreateMap<User, CreateUserResponse>()

@@ -10,6 +10,9 @@ namespace CleanArchitecture.Application.Interfaces.Services
         /// <returns>Jason Web Signature = Jwt assinado digitalmente</returns>
         string GenerateTokenECDSA(User user);
 
+        /// <summary>
+        /// Garante que a claim informada existe no corpo do token fornecido
+        /// </summary>
         void EnsureHaveClaim(string token, string claim);
 
         /// <summary>

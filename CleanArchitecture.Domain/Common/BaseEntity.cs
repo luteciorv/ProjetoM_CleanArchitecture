@@ -2,9 +2,9 @@
 {
     public abstract class BaseEntity
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
 
-        public DateTimeOffset DateCreated { get; private set; }
+        public DateTimeOffset DateCreated { get; }
         public DateTimeOffset? DateUpdated { get; protected set;}
         public DateTimeOffset? DateDeleted { get; protected set;}
        

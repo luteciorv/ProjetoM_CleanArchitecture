@@ -15,10 +15,6 @@ namespace CleanArchitecture.Infraestructure.Security.Services
             _configuration = configuration;
         }
 
-        /// <summary>
-        /// Cria as chaves pública e privada utilizando o algoritmo de criptografia ECDsa.
-        /// As chaves são encriptadas utilizando o algortimo RSA antes de serem salvas no banco de dados.
-        /// </summary>
         public ReadECDsaEncryptionDto CreateKeys()
         {         
             var securityKeys = new ECDsaSecurityKey(ECDsa.Create(ECCurve.NamedCurves.nistP521))
@@ -35,6 +31,7 @@ namespace CleanArchitecture.Infraestructure.Security.Services
                 privateKey
             );
         }   
+
         public ECDsaSecurityKey GetPublicKey()
         {
             var publicKey = Convert.FromBase64String(_configuration["ECDsaEncryption:PublicKey"]);

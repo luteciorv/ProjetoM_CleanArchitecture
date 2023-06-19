@@ -12,10 +12,6 @@ namespace CleanArchitecture.Infraestructure.Security.Services
         private const int ITERATIONS = 4;
         private const int MEMORY_SIZE = 1024 * 128;
 
-        /// <summary>
-        ///     Garante que o nível de segurança de uma senha utilizando a entropia.
-        ///     Mais informações no link: https://www.baeldung.com/cs/password-entropy
-        /// </summary>
         public async Task EnsureEntropyIsValid(string password)
         {
             int lowercaseLetters = password.Any(char.IsLower) ? 26 : 0;
